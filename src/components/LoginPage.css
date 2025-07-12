@@ -271,34 +271,148 @@
 }
 
 /* Mobile Responsive */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  .login-container {
+    padding: 20px;
+  }
+  
   .login-card {
-    min-width: 320px;
-    padding: 30px 20px;
-    margin: 20px;
+    min-width: 300px;
+    max-width: 400px;
+    width: 100%;
+    padding: 25px 20px;
+    margin: 10px auto;
+    min-height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .logo-section {
+    margin-bottom: 30px;
+  }
+  
+  .logo-section svg {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
   }
   
   .title {
-    font-size: 20px;
+    font-size: 22px;
+    margin-bottom: 8px;
   }
   
   .subtitle {
     font-size: 14px;
+    margin-bottom: 15px;
+  }
+  
+  .login-form {
+    gap: 20px;
+  }
+  
+  .form-input {
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+  
+  .login-button {
+    padding: 14px 24px;
+    font-size: 14px;
   }
   
   .language-switcher {
-    position: static;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+    top: 15px;
+    right: 15px;
   }
   
-  .language-menu {
-    position: relative;
-    top: auto;
+  .rtl .language-switcher {
+    left: 15px;
     right: auto;
-    left: auto;
-    margin-top: 10px;
+  }
+}
+
+/* iPhone 14 Pro Max and similar large phones */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 15px;
+    min-height: 100vh;
+    min-height: 100svh; /* Safari viewport height */
+  }
+  
+  .login-card {
+    min-width: 280px;
+    max-width: 350px;
+    padding: 20px 15px;
+    margin: 5px auto;
+    max-height: 85vh;
+    max-height: 85svh;
+  }
+  
+  .logo-section {
+    margin-bottom: 25px;
+  }
+  
+  .logo-section svg {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 12px;
+  }
+  
+  .title {
+    font-size: 18px;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  
+  .subtitle {
+    font-size: 12px;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  
+  .login-form {
+    gap: 16px;
+  }
+  
+  .form-label {
+    font-size: 12px;
+  }
+  
+  .form-input {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  .login-button {
+    padding: 12px 20px;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  
+  .version-info {
+    font-size: 10px;
+    margin-top: 20px;
+  }
+  
+  .language-switcher {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .rtl .language-switcher {
+    left: 10px;
+    right: auto;
+  }
+  
+  .lang-button {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  
+  .lang-option {
+    padding: 8px 12px;
+    font-size: 11px;
   }
 }
 
