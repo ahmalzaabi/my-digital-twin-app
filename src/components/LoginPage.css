@@ -26,28 +26,18 @@
 }
 
 .login-card {
-  background: rgba(15, 23, 42, 0.95);
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  border-radius: 20px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
   padding: 40px;
   min-width: 400px;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.8),
-    0 0 40px rgba(0, 212, 255, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: none;
   position: relative;
-  backdrop-filter: blur(10px);
+  backdrop-filter: none;
 }
 
 .login-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #00D4FF, transparent);
-  border-radius: 20px 20px 0 0;
+  display: none;
 }
 
 .language-switcher {
@@ -285,6 +275,9 @@
     min-height: auto;
     max-height: 90vh;
     overflow-y: auto;
+    background: transparent;
+    border: none;
+    box-shadow: none;
   }
   
   .logo-section {
@@ -347,6 +340,9 @@
     margin: 5px auto;
     max-height: 85vh;
     max-height: 85svh;
+    background: transparent;
+    border: none;
+    box-shadow: none;
   }
   
   .logo-section {
