@@ -3,7 +3,7 @@
   "short_name": "Command Center",
   "description": "AI-Powered Digital Twin System - Military Command Interface",
   "start_url": "/",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#0a0a0a",
   "theme_color": "#00D4FF",
   "orientation": "portrait-primary",
@@ -40,7 +40,7 @@
   ],
   "prefer_related_applications": false,
   "related_applications": [],
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": ["fullscreen", "standalone", "minimal-ui"],
   "edge_side_panel": {
     "preferred_width": 400
   }
