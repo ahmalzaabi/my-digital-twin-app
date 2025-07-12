@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './LoginPage.css';
 
 interface LoginPageProps {
-  onLogin: (success: boolean) => void;
+  onLogin: (success: boolean, selectedLanguage?: 'en' | 'ar') => void;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
@@ -39,7 +39,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (username.toLowerCase() === 'test' && password === '123456') {
-      onLogin(true);
+      onLogin(true, language);
     } else {
       alert(language === 'en' ? 'Invalid credentials' : 'بيانات غير صحيحة');
     }
