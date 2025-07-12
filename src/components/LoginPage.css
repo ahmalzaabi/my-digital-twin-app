@@ -2,6 +2,7 @@
 
 .login-container {
   min-height: 100vh;
+  width: 100vw;
   background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #111111 100%);
   display: flex;
   justify-content: center;
@@ -9,6 +10,8 @@
   font-family: 'Rajdhani', sans-serif;
   position: relative;
   overflow: hidden;
+  padding: 0;
+  margin: 0;
 }
 
 .login-container::before {
@@ -29,8 +32,9 @@
   background: transparent;
   border: none;
   border-radius: 0;
-  padding: 40px;
-  min-width: 400px;
+  padding: 20px;
+  width: 100%;
+  max-width: none;
   box-shadow: none;
   position: relative;
   backdrop-filter: none;
@@ -263,15 +267,15 @@
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .login-container {
-    padding: 20px;
+    padding: 0;
+    width: 100vw;
   }
   
   .login-card {
-    min-width: 300px;
-    max-width: 400px;
     width: 100%;
+    max-width: none;
     padding: 25px 20px;
-    margin: 10px auto;
+    margin: 0;
     min-height: auto;
     max-height: 90vh;
     overflow-y: auto;
@@ -328,14 +332,17 @@
 /* iPhone 14 Pro Max specific optimizations */
 @media (max-width: 480px) and (min-height: 800px) {
   .login-container {
-    padding: 5px;
+    padding: 0;
     justify-content: flex-start;
     padding-top: 40px;
+    width: 100vw;
   }
   
   .login-card {
-    padding: 12px 8px;
+    padding: 12px 15px;
     max-height: 98vh;
+    width: 100%;
+    max-width: none;
   }
   
   .logo-section {
@@ -386,19 +393,20 @@
 /* General mobile phones */
 @media (max-width: 480px) {
   .login-container {
-    padding: 10px;
+    padding: 0;
     min-height: 100vh;
     min-height: 100svh; /* Safari viewport height */
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
   
   .login-card {
-    width: 95%;
-    max-width: 400px;
+    width: 100%;
+    max-width: none;
     padding: 15px 20px;
-    margin: 0 auto;
+    margin: 0;
     max-height: 95vh;
     max-height: 95svh;
     background: transparent;
