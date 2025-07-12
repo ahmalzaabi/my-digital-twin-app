@@ -13,24 +13,24 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
   const translations = {
     en: {
-      title: 'Digital Command Center',
-      subtitle: 'AI-Powered Digital Twin System',
+      title: 'AI-Powered Digital Twin System',
+      subtitle: 'Advanced Military Technology Platform',
       username: 'Username',
       password: 'Password',
       login: 'Login',
       usernamePlaceholder: 'Enter username',
       passwordPlaceholder: 'Enter password',
-      version: 'Advanced Military System - Version 2.1'
+      version: 'Ahmad Alzaabi - Digital Twin - 2025'
     },
     ar: {
-      title: 'مركز القيادة الرقمي',
-      subtitle: 'نظام التوأم الرقمي المدعوم بالذكاء الاصطناعي',
+      title: 'نظام التوأمة الرقمية المدعوم بالذكاء الاصطناعي',
+      subtitle: 'منصة التكنولوجيا العسكرية المتقدمة',
       username: 'اسم المستخدم',
       password: 'كلمة المرور',
       login: 'تسجيل الدخول',
       usernamePlaceholder: 'أدخل اسم المستخدم',
       passwordPlaceholder: 'أدخل كلمة المرور',
-      version: 'نظام عسكري متقدم - النسخة 2.1'
+      version: 'احمد الزعابي - تقنيات التوأمة الرقمية - 2025'
     }
   };
 
@@ -38,7 +38,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === 'test' && password === '123456') {
+    if (username.toLowerCase() === 'test' && password === '123456') {
       onLogin(true);
     } else {
       alert(language === 'en' ? 'Invalid credentials' : 'بيانات غير صحيحة');
