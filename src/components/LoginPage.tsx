@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './LoginPage.css';
 
 interface LoginPageProps {
-  onLogin: (success: boolean, selectedLanguage?: 'en' | 'ar') => void;
+  onLogin: (success: boolean, selectedLanguage: 'en' | 'ar') => void;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {

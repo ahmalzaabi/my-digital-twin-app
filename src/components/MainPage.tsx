@@ -17,10 +17,12 @@ const MainPage: React.FC<MainPageProps> = ({ language, onLogout }) => {
       scenarios: 'Scenarios',
       iotCommand: 'IoT Command Center',
       analytics: 'Analytics',
+      coolingAdvisor: 'Cooling Advisor',
       maintenance: 'Maintenance',
       scenariosDesc: 'Simulate emergency scenarios and test response protocols',
       iotDesc: 'Real-time monitoring of sensors, equipment, and security systems',
       analyticsDesc: 'AI-powered predictive analytics and equipment failure forecasting',
+      coolingAdvisorDesc: 'AI-powered cooling optimization and energy management system',
       maintenanceDesc: 'Equipment maintenance scheduling and tracking (Coming Soon)',
       logout: 'Logout'
     },
@@ -30,10 +32,12 @@ const MainPage: React.FC<MainPageProps> = ({ language, onLogout }) => {
       scenarios: 'السيناريوهات',
       iotCommand: 'مركز قيادة إنترنت الأشياء',
       analytics: 'التحليلات',
+      coolingAdvisor: 'مستشار التبريد الذكي',
       maintenance: 'الصيانة',
       scenariosDesc: 'محاكاة سيناريوهات الطوارئ واختبار بروتوكولات الاستجابة',
       iotDesc: 'المراقبة الفورية للمستشعرات والمعدات وأنظمة الأمان',
       analyticsDesc: 'التحليلات التنبؤية المدعومة بالذكاء الاصطناعي وتوقع أعطال المعدات',
+      coolingAdvisorDesc: 'نظام تحسين التبريد الذكي وإدارة الطاقة المدعوم بالذكاء الاصطناعي',
       maintenanceDesc: 'جدولة وتتبع صيانة المعدات (قريباً)',
       logout: 'تسجيل الخروج'
     }
@@ -51,6 +55,10 @@ const MainPage: React.FC<MainPageProps> = ({ language, onLogout }) => {
 
   const handleAnalyticsClick = () => {
     navigate('/predictive-analytics');
+  };
+
+  const handleCoolingAdvisorClick = () => {
+    navigate('/cooling-advisor');
   };
 
   return (
@@ -100,6 +108,16 @@ const MainPage: React.FC<MainPageProps> = ({ language, onLogout }) => {
               <div className="feature-content">
                 <h3>{t.analytics}</h3>
                 <p>{t.analyticsDesc}</p>
+              </div>
+            </button>
+
+            <button 
+              className="feature-btn"
+              onClick={handleCoolingAdvisorClick}
+            >
+              <div className="feature-content">
+                <h3>{t.coolingAdvisor}</h3>
+                <p>{t.coolingAdvisorDesc}</p>
               </div>
             </button>
 
