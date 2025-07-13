@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
 
+/* iOS Safe Area Variables */
+:root {
+  --safe-area-inset-top: env(safe-area-inset-top);
+  --safe-area-inset-right: env(safe-area-inset-right);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom);
+  --safe-area-inset-left: env(safe-area-inset-left);
+}
+
 /* Reset and base styles */
 * {
   margin: 0;
@@ -9,30 +17,38 @@
 
 body {
   font-family: 'Rajdhani', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  background: #0a0a0a;
+  color: #ffffff;
+  overflow-x: hidden;
+  /* Add safe area support for iOS */
+  padding-top: var(--safe-area-inset-top);
+  padding-right: var(--safe-area-inset-right);
+  padding-bottom: var(--safe-area-inset-bottom);
+  padding-left: var(--safe-area-inset-left);
 }
 
 #root {
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  /* Ensure content stays within safe area */
+  min-height: calc(100vh - var(--safe-area-inset-top) - var(--safe-area-inset-bottom));
 }
 
 .app {
   min-height: 100vh;
-  min-height: 100dvh; /* Dynamic viewport height for mobile */
   width: 100vw;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-  color: #e2e8f0;
-  font-family: 'Rajdhani', sans-serif;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
   position: relative;
   overflow-x: hidden;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
   margin: 0;
-  /* iPhone safe area support */
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
+  padding: 0;
 }
 
 .app::before {
@@ -77,6 +93,9 @@ body {
   position: relative;
   z-index: 10;
   box-sizing: border-box;
+  /* Add extra padding for iOS safe area */
+  padding-top: calc(20px + var(--safe-area-inset-top));
+  min-height: 80px;
 }
 
 .app-header::before {
@@ -112,8 +131,9 @@ body {
   transition: all 0.3s ease;
   letter-spacing: 0.3px;
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: calc(15px + var(--safe-area-inset-top));
+  right: calc(15px + var(--safe-area-inset-right));
+  z-index: 20;
 }
 
 .logout-btn:hover {
@@ -178,9 +198,12 @@ body {
   }
   
   .app-header {
-    padding: 10px 5px;
+    padding: 15px 5px;
     width: 100%;
     justify-content: center;
+    /* Increase padding for mobile safe area */
+    padding-top: calc(25px + var(--safe-area-inset-top));
+    min-height: 90px;
   }
   
   .app-header h1 {
@@ -188,15 +211,19 @@ body {
   }
   
   .logout-btn {
-    padding: 4px 8px;
-    font-size: 9px;
-    top: 8px;
-    right: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    /* Adjust position for mobile safe area */
+    top: calc(25px + var(--safe-area-inset-top));
+    right: calc(10px + var(--safe-area-inset-right));
+    z-index: 20;
   }
   
   .app-main {
-    padding: 2px;
+    padding: 10px;
     width: 100%;
+    /* Add margin to prevent content from being too close to top */
+    margin-top: 10px;
   }
 }
 
@@ -293,6 +320,9 @@ html, body {
   align-items: center;
   padding: 40px 20px 20px 20px;
   z-index: 10;
+  /* Add safe area support */
+  padding-top: calc(40px + var(--safe-area-inset-top));
+  margin-top: 20px;
 }
 
 .scenarios-header {
@@ -734,6 +764,9 @@ html, body {
   .back-btn {
     padding: 8px 15px;
     font-size: 12px;
+    /* Increase min-height for better mobile accessibility */
+    min-height: 44px;
+    margin-top: 10px;
   }
 }
 
@@ -753,6 +786,9 @@ html, body {
   margin-bottom: 30px;
   padding: 20px 0;
   border-bottom: 2px solid #2a2a40;
+  /* Add safe area support */
+  padding-top: calc(20px + var(--safe-area-inset-top));
+  margin-top: 20px;
 }
 
 .iot-header h1 {
@@ -1218,6 +1254,9 @@ html, body {
   border-radius: 15px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Add safe area support */
+  padding-top: calc(20px + var(--safe-area-inset-top));
+  margin-top: 20px;
 }
 
 .analytics-header h1 {
