@@ -14,21 +14,23 @@ const ScenariosPage: React.FC<ScenariosPageProps> = ({ language, onLanguageChang
   const scenarios = {
     en: {
       title: "Scenarios Simulation",
-      backToMain: "← Back to Main",
-      overheating: "🔥 Simulate Server Overheating",
-      waterLeak: "🌊 Simulate Water Leak",
-      powerOutage: "⚡ Simulate Power Outage",
-      vibration: "📳 Simulate Vibration Alert",
-      reset: "Reset Simulation"
+      backToMain: "Back to Main",
+      overheating: "Simulate Server Overheating",
+      waterLeak: "Simulate Water Leak",
+      powerOutage: "Simulate Power Outage",
+      vibration: "Simulate Vibration Alert",
+      reset: "Reset Simulation",
+      instructions: "Select a scenario to see problem indicators appear automatically on the model"
     },
     ar: {
       title: "محاكاة السيناريوهات",
-      backToMain: "← العودة للرئيسية",
-      overheating: "🔥 محاكاة ارتفاع حرارة الخادم",
-      waterLeak: "🌊 محاكاة تسريب المياه",
-      powerOutage: "⚡ محاكاة انقطاع الكهرباء",
-      vibration: "📳 محاكاة تنبيه الاهتزاز",
-      reset: "إعادة تعيين المحاكاة"
+      backToMain: "العودة للرئيسية",
+      overheating: "محاكاة ارتفاع حرارة الخادم",
+      waterLeak: "محاكاة تسريب المياه",
+      powerOutage: "محاكاة انقطاع الكهرباء",
+      vibration: "محاكاة تنبيه الاهتزاز",
+      reset: "إعادة تعيين المحاكاة",
+      instructions: "اختر سيناريو لرؤية مؤشرات المشاكل تظهر تلقائيًا على النموذج"
     }
   };
 
@@ -147,6 +149,12 @@ const ScenariosPage: React.FC<ScenariosPageProps> = ({ language, onLanguageChang
         {getAlertMessage() && (
           <div className="alert-message">
             {getAlertMessage()}
+          </div>
+        )}
+        
+        {activeScenario && (
+          <div className="instructions">
+            <p>{texts.instructions}</p>
           </div>
         )}
       </div>

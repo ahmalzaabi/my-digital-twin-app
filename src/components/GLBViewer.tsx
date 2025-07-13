@@ -1,5 +1,5 @@
 import { Suspense, useRef, useEffect, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Environment, Html } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -10,77 +10,131 @@ interface GLBViewerProps {
   activeScenario?: string | null;
 }
 
-
-
-// Simple arrow indicator component
-function ArrowIndicator({ position, color, label, isVibrating = false }: { 
-  position: THREE.Vector3; 
-  color: number; 
-  label: string;
-  isVibrating?: boolean;
+// Simple problem indicator overlay
+function ProblemIndicator({ 
+  position, 
+  scenario,
+  index 
+}: { 
+  position: THREE.Vector3;
+  scenario: string;
+  index: number;
 }) {
-  const arrowRef = useRef<THREE.Group>(null);
+  const indicatorRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
-    if (arrowRef.current) {
-      if (isVibrating) {
-        // Fast shaking animation for vibration
-        const shake = Math.sin(state.clock.elapsedTime * 15) * 0.1;
-        const shakeY = Math.sin(state.clock.elapsedTime * 12) * 0.1;
-        arrowRef.current.position.set(
-          position.x + shake,
-          position.y + 2 + shakeY,
-          position.z + Math.sin(state.clock.elapsedTime * 18) * 0.05
-        );
-        // Fast rotation for vibration effect
-        arrowRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 8) * 0.3;
-      } else {
-        // Gentle floating animation for other scenarios
-        arrowRef.current.position.y = position.y + 2 + Math.sin(state.clock.elapsedTime * 2) * 0.3;
-        // Gentle rotation to make it more visible
-        arrowRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 1.5) * 0.2;
-      }
+    if (indicatorRef.current) {
+      // Gentle floating animation
+      indicatorRef.current.position.y = position.y + Math.sin(state.clock.elapsedTime * 2 + index) * 0.1;
+      
+      // Gentle rotation
+      indicatorRef.current.rotation.y = state.clock.elapsedTime * 0.5;
     }
   });
   
+  const getIndicatorConfig = () => {
+    switch (scenario) {
+      case 'overheating':
+        return {
+          color: '#ff0000',
+          label: 'here',
+          bgColor: 'rgba(255, 0, 0, 0.9)'
+        };
+      case 'waterLeak':
+        return {
+          color: '#0099ff',
+          label: 'here',
+          bgColor: 'rgba(0, 153, 255, 0.9)'
+        };
+      case 'powerOutage':
+        return {
+          color: '#ffa500',
+          label: 'here',
+          bgColor: 'rgba(255, 165, 0, 0.9)'
+        };
+      case 'vibration':
+        return {
+          color: '#9900ff',
+          label: 'here',
+          bgColor: 'rgba(153, 0, 255, 0.9)'
+        };
+      default:
+        return {
+          color: '#ffffff',
+          label: 'here',
+          bgColor: 'rgba(255, 255, 255, 0.9)'
+        };
+    }
+  };
+  
+  const config = getIndicatorConfig();
+  
   return (
-    <group ref={arrowRef} position={[position.x, position.y + 2, position.z]}>
+    <group ref={indicatorRef} position={[position.x, position.y + 0.5, position.z]}>
+      {/* Glowing sphere */}
+      <mesh>
+        <sphereGeometry args={[0.05, 16, 16]} />
+        <meshBasicMaterial 
+          color={config.color}
+          transparent
+          opacity={0.8}
+        />
+      </mesh>
+      
       {/* Arrow pointing down */}
-      <group rotation={[Math.PI, 0, 0]}>
+      <group position={[0, 0.1, 0]} rotation={[0, 0, 0]}>
         {/* Arrow shaft */}
         <mesh position={[0, 0, 0]}>
-          <cylinderGeometry args={[0.05, 0.05, 1, 8]} />
-          <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.3} />
+          <cylinderGeometry args={[0.01, 0.01, 0.3, 8]} />
+          <meshBasicMaterial color={config.color} />
         </mesh>
         
-        {/* Arrow head (cone) */}
-        <mesh position={[0, -0.7, 0]}>
-          <coneGeometry args={[0.2, 0.4, 8]} />
-          <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.5} />
+        {/* Arrow head */}
+        <mesh position={[0, -0.2, 0]}>
+          <coneGeometry args={[0.03, 0.08, 8]} />
+          <meshBasicMaterial color={config.color} />
         </mesh>
       </group>
       
-      {/* Label */}
-      <Html position={[0, 1, 0]} center>
+      {/* Floating label */}
+      <Html position={[0, 0.4, 0]} center>
         <div style={{
-          background: `rgba(${color === 0xff0000 ? '255,0,0' : color === 0x0099ff ? '0,153,255' : '255,165,0'}, 0.9)`,
+          background: config.bgColor,
           color: 'white',
-          padding: '4px 8px',
-          borderRadius: '4px',
-          fontSize: '10px',
+          padding: '6px 12px',
+          borderRadius: '15px',
+          fontSize: '12px',
           fontWeight: 'bold',
-          whiteSpace: 'nowrap',
+          fontFamily: 'Orbitron, monospace',
           textAlign: 'center',
-          border: '1px solid rgba(255,255,255,0.3)',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+          whiteSpace: 'nowrap',
+          border: `2px solid ${config.color}`,
+          boxShadow: `0 0 15px ${config.color}`,
+          transform: 'scale(0.85)',
+          userSelect: 'none',
+          pointerEvents: 'none'
         }}>
-          {label}
+          {config.label}
         </div>
       </Html>
+      
+      {/* Warning ring */}
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.15, 0.2, 32]} />
+        <meshBasicMaterial 
+          color={config.color}
+          transparent
+          opacity={0.3}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
     </group>
   );
 }
 
+
+
+// Main Model component
 function Model({ url, onModelLoaded, activeScenario }: { 
   url: string; 
   onModelLoaded: (boundingBox: THREE.Box3) => void;
@@ -88,62 +142,38 @@ function Model({ url, onModelLoaded, activeScenario }: {
 }) {
   const { scene } = useGLTF(url);
   const modelRef = useRef<THREE.Group>(null);
-  const [selectedMeshes, setSelectedMeshes] = useState<{
-    overheating: THREE.Mesh | null;
-    waterLeak: THREE.Mesh | null;
-    powerOutage: THREE.Mesh[];
-    vibration: THREE.Mesh | null;
+  const [problemAreas, setProblemAreas] = useState<{
+    overheating: THREE.Vector3[];
+    waterLeak: THREE.Vector3[];
+    powerOutage: THREE.Vector3[];
+    vibration: THREE.Vector3[];
   }>({
-    overheating: null,
-    waterLeak: null,
+    overheating: [],
+    waterLeak: [],
     powerOutage: [],
-    vibration: null
+    vibration: []
   });
   
-  // Clone the scene to avoid issues with multiple instances
+  const [modelMeshes, setModelMeshes] = useState<THREE.Mesh[]>([]);
+  
+  // Clone the scene
   const clonedScene = scene.clone();
   
-  // Center the model and get bounding box info
+  // Center the model
   const box = new THREE.Box3().setFromObject(clonedScene);
   const center = box.getCenter(new THREE.Vector3());
   clonedScene.position.sub(center);
   
-  // Find all meshes and randomly select ones for each scenario
+  // Extract meshes from the model
   useEffect(() => {
     if (modelRef.current) {
-      // Find all meshes in the model
       const meshes: THREE.Mesh[] = [];
       modelRef.current.traverse((child) => {
-        if (child instanceof THREE.Mesh && child.name) {
+        if (child instanceof THREE.Mesh) {
           meshes.push(child);
         }
       });
-      
-      console.log('All mesh names in model:', meshes.map(m => m.name));
-      
-      if (meshes.length > 0) {
-        // Randomly select meshes for each scenario
-        const shuffled = [...meshes].sort(() => 0.5 - Math.random());
-        
-        const overheatingMesh = shuffled[0] || null;
-        const waterLeakMesh = shuffled[1] || null;
-        const powerOutageMeshes = shuffled.slice(2, 5); // Select 3 random meshes
-        const vibrationMesh = shuffled[5] || null; // Assuming vibration is the 6th mesh
-        
-        setSelectedMeshes({
-          overheating: overheatingMesh,
-          waterLeak: waterLeakMesh,
-          powerOutage: powerOutageMeshes,
-          vibration: vibrationMesh
-        });
-        
-        console.log('Selected meshes:', {
-          overheating: overheatingMesh?.name,
-          waterLeak: waterLeakMesh?.name,
-          powerOutage: powerOutageMeshes.map(m => m.name),
-          vibration: vibrationMesh?.name
-        });
-      }
+      setModelMeshes(meshes);
     }
   }, []);
   
@@ -154,55 +184,87 @@ function Model({ url, onModelLoaded, activeScenario }: {
     }
   }, [onModelLoaded]);
   
+  // Auto-place random indicators when scenario changes
+  useEffect(() => {
+    if (activeScenario && modelMeshes.length > 0) {
+      // Clear existing indicators for this scenario
+      setProblemAreas(prev => ({
+        ...prev,
+        [activeScenario]: []
+      }));
+      
+      // Create random positions based on mesh locations
+      const shuffledMeshes = [...modelMeshes].sort(() => 0.5 - Math.random());
+      const numIndicators = Math.min(3, shuffledMeshes.length); // Maximum 3 indicators
+      const randomPositions: THREE.Vector3[] = [];
+      
+      for (let i = 0; i < numIndicators; i++) {
+        const mesh = shuffledMeshes[i];
+        const worldPos = new THREE.Vector3();
+        mesh.getWorldPosition(worldPos);
+        
+        // Add some random offset
+        worldPos.x += (Math.random() - 0.5) * 0.5;
+        worldPos.y += (Math.random() - 0.5) * 0.5;
+        worldPos.z += (Math.random() - 0.5) * 0.5;
+        
+        randomPositions.push(worldPos);
+      }
+      
+      // Set the random positions after a short delay for better UX
+      setTimeout(() => {
+        setProblemAreas(prev => ({
+          ...prev,
+          [activeScenario]: randomPositions
+        }));
+      }, 500);
+    } else if (!activeScenario) {
+      // Clear all indicators when no scenario is active
+      setProblemAreas({
+        overheating: [],
+        waterLeak: [],
+        powerOutage: [],
+        vibration: []
+      });
+    }
+  }, [activeScenario, modelMeshes]);
+  
   // Add rotation animation
   useFrame((_, delta) => {
     if (modelRef.current) {
       modelRef.current.rotation.y += delta * 0.2;
+      
+      // Add vibration effect for vibration scenario
+      if (activeScenario === 'vibration') {
+        const time = Date.now() * 0.01;
+        modelRef.current.position.x = Math.sin(time * 2) * 0.02;
+        modelRef.current.position.z = Math.cos(time * 2.5) * 0.02;
+      } else {
+        modelRef.current.position.set(0, 0, 0);
+      }
     }
   });
+  
+
   
   return (
     <group ref={modelRef} scale={1.5}>
       <primitive object={clonedScene} />
       
-      {/* Arrow indicators for each scenario */}
-      {activeScenario === 'overheating' && selectedMeshes.overheating && (
-        <ArrowIndicator 
-          position={selectedMeshes.overheating.position} 
-          color={0xff0000} 
-          label="🔥 here"
-        />
-      )}
-      
-      {activeScenario === 'waterLeak' && selectedMeshes.waterLeak && (
-        <ArrowIndicator 
-          position={selectedMeshes.waterLeak.position} 
-          color={0x0099ff} 
-          label="💧 here"
-        />
-      )}
-      
-      {activeScenario === 'powerOutage' && selectedMeshes.powerOutage.map((mesh, index) => (
-        <ArrowIndicator 
-          key={`power-${index}`}
-          position={mesh.position} 
-          color={0xffa500} 
-          label="⚡ here"
+      {/* Problem indicators for active scenario */}
+      {activeScenario && problemAreas[activeScenario as keyof typeof problemAreas].map((point, index) => (
+        <ProblemIndicator
+          key={`${activeScenario}-${index}`}
+          position={point}
+          scenario={activeScenario}
+          index={index}
         />
       ))}
-
-      {activeScenario === 'vibration' && selectedMeshes.vibration && (
-        <ArrowIndicator 
-          position={selectedMeshes.vibration.position} 
-          color={0x9900ff} // Purple/Magenta color for vibration
-          label="💥 here"
-          isVibrating={true} // Pass true for vibration
-        />
-      )}
     </group>
   );
 }
 
+// Main GLBViewer component
 function GLBViewer({ modelUrl, width = '100%', height = '400px', activeScenario }: GLBViewerProps) {
   const [cameraDistance, setCameraDistance] = useState(5);
   

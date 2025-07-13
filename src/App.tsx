@@ -4,6 +4,8 @@ import './App.css'
 import LoginPage from './components/LoginPage'
 import MainPage from './components/MainPage'
 import ScenariosPage from './components/ScenariosPage'
+import IoTDashboard from './components/IoTDashboard'
+import PredictiveAnalytics from './components/PredictiveAnalytics';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -40,7 +42,6 @@ function App() {
               <MainPage 
                 language={language} 
                 onLogout={handleLogout}
-                onLanguageChange={handleLanguageChange}
               />
             } 
           />
@@ -50,6 +51,22 @@ function App() {
               <ScenariosPage 
                 language={language}
                 onLanguageChange={handleLanguageChange}
+              />
+            } 
+          />
+          <Route 
+            path="/iot-dashboard" 
+            element={
+              <IoTDashboard 
+                language={language}
+              />
+            } 
+          />
+          <Route 
+            path="/predictive-analytics" 
+            element={
+              <PredictiveAnalytics 
+                language={language}
               />
             } 
           />

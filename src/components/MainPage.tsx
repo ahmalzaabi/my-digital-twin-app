@@ -1,98 +1,117 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import GLBViewer from './GLBViewer';
 
 interface MainPageProps {
-  language: string;
+  language: 'en' | 'ar';
   onLogout: () => void;
-  onLanguageChange: (newLanguage: 'en' | 'ar') => void;
 }
 
-const MainPage: React.FC<MainPageProps> = ({ language, onLogout, onLanguageChange }) => {
-  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+const MainPage: React.FC<MainPageProps> = ({ language, onLogout }) => {
+  const navigate = useNavigate();
 
-  const content = {
+  const translations = {
     en: {
-      title: "Digital Twin Control Center",
-      scenarios: "🎯 Scenarios",
-      futureFeature1: "📊 Analytics",
-      futureFeature2: "🔧 Maintenance",
-      futureFeature3: "📈 Reports",
-      logout: "Logout"
+      title: 'Data Center Digital Twin',
+      subtitle: 'Advanced Monitoring & Control System',
+      scenarios: 'Scenarios',
+      iotCommand: 'IoT Command Center',
+      analytics: 'Analytics',
+      maintenance: 'Maintenance',
+      scenariosDesc: 'Simulate emergency scenarios and test response protocols',
+      iotDesc: 'Real-time monitoring of sensors, equipment, and security systems',
+      analyticsDesc: 'AI-powered predictive analytics and equipment failure forecasting',
+      maintenanceDesc: 'Equipment maintenance scheduling and tracking (Coming Soon)',
+      logout: 'Logout'
     },
     ar: {
-      title: "مركز التحكم بالتوأم الرقمي",
-      scenarios: "🎯 السيناريوهات",
-      futureFeature1: "📊 التحليلات",
-      futureFeature2: "🔧 الصيانة",
-      futureFeature3: "📈 التقارير",
-      logout: "تسجيل الخروج"
+      title: 'التوأم الرقمي لمركز البيانات',
+      subtitle: 'نظام المراقبة والتحكم المتقدم',
+      scenarios: 'السيناريوهات',
+      iotCommand: 'مركز قيادة إنترنت الأشياء',
+      analytics: 'التحليلات',
+      maintenance: 'الصيانة',
+      scenariosDesc: 'محاكاة سيناريوهات الطوارئ واختبار بروتوكولات الاستجابة',
+      iotDesc: 'المراقبة الفورية للمستشعرات والمعدات وأنظمة الأمان',
+      analyticsDesc: 'التحليلات التنبؤية المدعومة بالذكاء الاصطناعي وتوقع أعطال المعدات',
+      maintenanceDesc: 'جدولة وتتبع صيانة المعدات (قريباً)',
+      logout: 'تسجيل الخروج'
     }
   };
 
-  const texts = content[language as keyof typeof content];
+  const t = translations[language];
 
-  const toggleLanguage = (lang: 'en' | 'ar') => {
-    onLanguageChange(lang);
-    setShowLanguageMenu(false);
+  const handleScenariosClick = () => {
+    navigate('/scenarios');
+  };
+
+  const handleIoTClick = () => {
+    navigate('/iot-dashboard');
+  };
+
+  const handleAnalyticsClick = () => {
+    navigate('/predictive-analytics');
   };
 
   return (
-    <div className={`main-page ${language === 'ar' ? 'rtl' : 'ltr'}`}>
-      <div className="page-header">
-        <div className="language-switcher">
-          <button 
-            className="lang-button"
-            onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-          >
-            {language.toUpperCase()}
-          </button>
-          {showLanguageMenu && (
-            <div className="language-menu">
-              <button 
-                className={`lang-option ${language === 'en' ? 'active' : ''}`}
-                onClick={() => toggleLanguage('en')}
-              >
-                EN
-              </button>
-              <button 
-                className={`lang-option ${language === 'ar' ? 'active' : ''}`}
-                onClick={() => toggleLanguage('ar')}
-              >
-                AR
-              </button>
-            </div>
-          )}
-        </div>
-        
+    <div className="main-page" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+      <div className="app-header">
+        <h1>{t.title}</h1>
         <button className="logout-btn" onClick={onLogout}>
-          {texts.logout}
+          {t.logout}
         </button>
       </div>
-      
-      <div className="viewer-container">
-        <GLBViewer modelUrl="/models/data_center_model.glb" />
-      </div>
-      
-      <div className="main-controls">
-        <h2 className="main-title">{texts.title}</h2>
+
+      <div className="app-main">
+        <div className="viewer-container">
+          <GLBViewer modelUrl="/models/data_center_model.glb" activeScenario={null} />
+        </div>
         
-        <div className="feature-buttons">
-          <Link to="/scenarios" className="feature-btn active">
-            {texts.scenarios}
-          </Link>
+        <div className="main-controls">
+          <div className="main-title">
+            <h2>{t.subtitle}</h2>
+          </div>
           
-          <button className="feature-btn disabled" disabled>
-            {texts.futureFeature1}
-          </button>
-          
-          <button className="feature-btn disabled" disabled>
-            {texts.futureFeature2}
-          </button>
-          
-          <button className="feature-btn disabled" disabled>
-            {texts.futureFeature3}
-          </button>
+          <div className="feature-buttons">
+            <button 
+              className="feature-btn"
+              onClick={handleScenariosClick}
+            >
+              <div className="feature-content">
+                <h3>{t.scenarios}</h3>
+                <p>{t.scenariosDesc}</p>
+              </div>
+            </button>
+
+            <button 
+              className="feature-btn"
+              onClick={handleIoTClick}
+            >
+              <div className="feature-content">
+                <h3>{t.iotCommand}</h3>
+                <p>{t.iotDesc}</p>
+              </div>
+            </button>
+
+            <button 
+              className="feature-btn"
+              onClick={handleAnalyticsClick}
+            >
+              <div className="feature-content">
+                <h3>{t.analytics}</h3>
+                <p>{t.analyticsDesc}</p>
+              </div>
+            </button>
+
+            <button 
+              className="feature-btn disabled"
+            >
+              <div className="feature-content">
+                <h3>{t.maintenance}</h3>
+                <p>{t.maintenanceDesc}</p>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
     </div>
