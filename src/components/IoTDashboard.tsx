@@ -19,9 +19,9 @@ interface IoTDashboardProps {
 
 const IoTDashboard: React.FC<IoTDashboardProps> = ({ language }) => {
   const [sensorData, setSensorData] = useState<SensorReading[]>(initialSensorData);
-  const [equipmentStatus, setEquipmentStatus] = useState<EquipmentStatus[]>(equipmentStatusData);
-  const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>(securityEventsData);
-  const [predictiveAlerts, setPredictiveAlerts] = useState<PredictiveAlert[]>(predictiveAlertsData);
+  const [equipmentStatus] = useState<EquipmentStatus[]>(equipmentStatusData);
+  const [securityEvents] = useState<SecurityEvent[]>(securityEventsData);
+  const [predictiveAlerts] = useState<PredictiveAlert[]>(predictiveAlertsData);
   const [isRealTimeEnabled, setIsRealTimeEnabled] = useState(false);
 
   const translations = {

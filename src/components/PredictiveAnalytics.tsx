@@ -225,7 +225,7 @@ const PredictiveAnalytics: React.FC<PredictiveAnalyticsProps> = ({ language }) =
     <div className="performance-section">
       <h3>{isRTL ? 'مقاييس الأداء' : 'Performance Metrics'}</h3>
       <div className="performance-grid">
-        {metrics.map((metric, index) => {
+        {metrics.map((metric, _index) => {
           const equipment = predictions.find(p => p.equipmentId === metric.equipmentId);
           return (
             <div key={metric.equipmentId} className="performance-card">
